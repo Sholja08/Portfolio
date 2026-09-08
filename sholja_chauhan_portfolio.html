@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sholja Chauhan — Software Engineer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0F1419;
+    --panel:#151C24;
+    --panel-2:#1B242D;
+    --line: #2A3542;
+    --text:#E7ECF1;
+    --muted:#8493A1;
+    --amber:#E8A33D;
+    --teal:#48B8A6;
+    --maxw: 920px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--ink);
+    color:var(--text);
+    font-family:'Inter', sans-serif;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,.mono{
+    font-family:'Space Grotesk', sans-serif;
+  }
+  .data{
+    font-family:'IBM Plex Mono', monospace;
+  }
+  a{color:inherit;}
+  ::selection{background:var(--amber); color:#0F1419;}
+
+  .wrap{
+    max-width: var(--maxw);
+    margin:0 auto;
+    padding: 0 28px;
+  }
+
+  /* ---------- NAV ---------- */
+  nav{
+    position:sticky; top:0; z-index:50;
+    background:rgba(15,20,25,0.85);
+    backdrop-filter: blur(8px);
+    border-bottom:1px solid var(--line);
+  }
+  nav .wrap{
+    display:flex; align-items:center; justify-content:space-between;
+    padding-top:16px; padding-bottom:16px;
+  }
+  .brand{font-weight:600; font-size:1.05rem; letter-spacing:0.2px;}
+  .brand span{color:var(--amber);}
+  nav ul{
+    list-style:none; display:flex; gap:28px; margin:0; padding:0;
+  }
+  nav a{
+    text-decoration:none; color:var(--muted); font-size:0.92rem;
+    transition:color .2s ease;
+  }
+  nav a:hover{color:var(--text);}
+
+  /* ---------- HERO ---------- */
+  header.hero{
+    position:relative;
+    padding: 88px 0 96px;
+    overflow:hidden;
+    border-bottom:1px solid var(--line);
+  }
+  .hero .wrap{
+    display:grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap:40px;
+    align-items:center;
+  }
+  .role-tag{
+    color:var(--teal);
+    font-size:0.85rem;
+    margin-bottom:18px;
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+  }
+  .role-tag .dot{
+    width:7px; height:7px; border-radius:50%;
+    background:var(--teal);
+    box-shadow: 0 0 0 3px rgba(72,184,166,0.15);
+  }
+  h1.name{
+    font-size: 2.9rem;
+    line-height:1.08;
+    margin: 0 0 18px;
+    font-weight:600;
+    letter-spacing:-0.5px;
+  }
+  .summary{
+    color:var(--muted);
+    font-size:1.05rem;
+    max-width: 46ch;
+    margin-bottom:30px;
+  }
+  .hero-links{
+    display:flex; flex-wrap:wrap; gap:12px;
+  }
+  .hero-links a{
+    text-decoration:none;
+    padding:9px 16px;
+    border:1px solid var(--line);
+    border-radius:6px;
+    font-size:0.88rem;
+    color:var(--text);
+    transition: border-color .2s ease, background .2s ease;
+  }
+  .hero-links a:hover{
+    border-color:var(--amber);
+    background: rgba(232,163,61,0.06);
+  }
+  .hero-links a.primary{
+    background:var(--amber);
+    color:#151005;
+    border-color:var(--amber);
+    font-weight:600;
+  }
+  .hero-links a.primary:hover{
+    background:#f0b25a;
+  }
+
+  /* node graph visual */
+  .graph{
+    position:relative;
+    height:320px;
+  }
+  .graph svg{ width:100%; height:100%; }
+  .graph .node-label{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    fill:var(--muted);
+  }
+  .graph .node-label.active{ fill:var(--amber); }
+  .graph circle.node{ fill:var(--panel-2); stroke:var(--line); stroke-width:1.5; }
+  .graph circle.node.hot{ stroke:var(--amber); fill:#241a0c; }
+  .graph circle.node.mid{ stroke:var(--teal); fill:#0f211e; }
+  .graph path.edge{
+    stroke:var(--line); stroke-width:1.4; fill:none;
+  }
+  .graph path.edge.flow{
+    stroke:var(--amber); stroke-width:1.6; fill:none;
+    stroke-dasharray: 4 5;
+    animation: dash 3.5s linear infinite;
+    opacity:0.85;
+  }
+  @keyframes dash{ to{ stroke-dashoffset:-90; } }
+
+  /* ---------- SECTION HEADS ---------- */
+  section{ padding: 74px 0; border-bottom:1px solid var(--line); }
+  section:last-of-type{ border-bottom:none; }
+  .sec-head{
+    display:flex; align-items:baseline; gap:14px; margin-bottom:40px;
+  }
+  .sec-head .idx{
+    font-family:'IBM Plex Mono', monospace;
+    color:var(--line);
+    font-size:1.6rem;
+    font-weight:500;
+  }
+  .sec-head h2{
+    font-size:1.5rem; margin:0; font-weight:600;
+  }
+
+  /* ---------- EXPERIENCE (pipeline) ---------- */
+  .pipeline{
+    position:relative;
+    padding-left: 28px;
+    border-left: 2px solid var(--line);
+  }
+  .pipeline .role{
+    position:relative;
+    margin-bottom:6px;
+  }
+  .pipeline .role::before{
+    content:'';
+    position:absolute;
+    left:-34px; top:6px;
+    width:11px; height:11px;
+    border-radius:50%;
+    background:var(--amber);
+    box-shadow:0 0 0 4px rgba(232,163,61,0.15);
+  }
+  .role-title{ font-size:1.15rem; font-weight:600; margin:0; }
+  .role-meta{
+    color:var(--muted); font-size:0.88rem; margin: 4px 0 18px;
+    font-family:'IBM Plex Mono', monospace;
+  }
+  .pipeline ul{ margin:0; padding-left:20px; color: #C4CDD6; }
+  .pipeline li{ margin-bottom:10px; }
+  .pipeline li::marker{ color:var(--teal); }
+
+  /* ---------- PROJECTS ---------- */
+  .projects{ display:flex; flex-direction:column; gap:2px; }
+  .project{
+    display:grid;
+    grid-template-columns: 210px 1fr;
+    gap: 28px;
+    padding: 26px 0;
+    border-top:1px solid var(--line);
+  }
+  .project:first-child{ border-top:none; }
+  .project h3{
+    margin:0 0 6px; font-size:1.15rem; font-weight:600;
+  }
+  .project .stack{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.78rem;
+    color:var(--teal);
+    margin-bottom:6px;
+  }
+  .project a.repo{
+    font-size:0.83rem;
+    color:var(--muted);
+    text-decoration:none;
+    border-bottom:1px dotted var(--line);
+  }
+  .project a.repo:hover{ color:var(--amber); border-color:var(--amber); }
+  .project p, .project ul{ color:#C4CDD6; margin:10px 0 0; padding-left:18px; }
+  .project li{ margin-bottom:6px; font-size:0.95rem; }
+  .project li::marker{ color:var(--teal); }
+
+  /* ---------- SKILLS ---------- */
+  .skill-grid{
+    display:grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 28px 40px;
+  }
+  .skill-group h4{
+    margin:0 0 12px;
+    font-size:0.82rem;
+    color:var(--muted);
+    font-weight:500;
+    font-family:'IBM Plex Mono', monospace;
+  }
+  .chip-row{ display:flex; flex-wrap:wrap; gap:8px; }
+  .chip{
+    border:1px solid var(--line);
+    padding:6px 12px;
+    border-radius:5px;
+    font-size:0.85rem;
+    color:var(--text);
+    background:var(--panel);
+  }
+
+  /* ---------- EDUCATION ---------- */
+  .edu-item{
+    display:flex; justify-content:space-between; align-items:baseline;
+    padding: 16px 0;
+    border-top:1px solid var(--line);
+    gap:20px;
+  }
+  .edu-item:first-child{ border-top:none; }
+  .edu-item .school{ font-weight:600; }
+  .edu-item .degree{ color:var(--muted); font-size:0.9rem; margin-top:3px;}
+  .edu-item .score{
+    font-family:'IBM Plex Mono', monospace;
+    color:var(--teal);
+    font-size:0.88rem;
+    white-space:nowrap;
+  }
+
+  /* ---------- FOOTER ---------- */
+  footer{
+    padding: 60px 0 50px;
+    text-align:center;
+  }
+  footer h2{
+    font-size:1.7rem; margin: 0 0 14px;
+  }
+  footer p{ color:var(--muted); margin-bottom:28px; }
+  footer .hero-links{ justify-content:center; }
+  .fine{
+    margin-top:50px;
+    color:#4C5A67;
+    font-size:0.78rem;
+    font-family:'IBM Plex Mono', monospace;
+  }
+
+  @media (max-width: 780px){
+    .hero .wrap{ grid-template-columns: 1fr; }
+    .graph{ height:220px; order:-1; }
+    h1.name{ font-size:2.1rem; }
+    .skill-grid{ grid-template-columns:1fr; }
+    .project{ grid-template-columns:1fr; }
+    nav ul{ gap:16px; }
+    nav a{ font-size:0.82rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <div class="brand">Sholja<span>.</span>Chauhan</div>
+    <ul>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#education">Education</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <div>
+      <div class="role-tag"><span class="dot"></span>Available for new opportunities</div>
+      <h1 class="name">Building the agents<br>behind UPI support.</h1>
+      <p class="summary">Junior Software Engineer at NPCI, working on AI-powered conversational agents and agentic workflows for a live production fintech system. Focused on secure API integration, LLM pipeline design, and cutting manual support workload through automation.</p>
+      <div class="hero-links">
+        <a href="mailto:sholjachauhan@gmail.com" class="primary">Email me</a>
+        <a href="https://linkedin.com/in/sholja-chauhan" target="_blank">LinkedIn</a>
+        <a href="https://github.com/Sholja08" target="_blank">GitHub</a>
+        <a href="tel:+916386943668">+91 63869 43668</a>
+      </div>
+    </div>
+
+    <div class="graph">
+      <svg viewBox="0 0 320 320" preserveAspectRatio="xMidYMid meet">
+        <path class="edge flow" d="M60,60 C110,60 110,110 160,110" />
+        <path class="edge" d="M160,110 C210,110 210,60 260,60" />
+        <path class="edge flow" d="M160,110 C160,160 100,170 70,210" />
+        <path class="edge" d="M160,110 C170,160 230,170 250,215" />
+        <path class="edge" d="M70,210 C90,250 130,260 160,270" />
+        <path class="edge flow" d="M250,215 C220,250 190,260 160,270" />
+
+        <circle class="node hot" cx="60" cy="60" r="26"/>
+        <text class="node-label active" x="60" y="64" text-anchor="middle">query</text>
+
+        <circle class="node" cx="260" cy="60" r="24"/>
+        <text class="node-label" x="260" y="64" text-anchor="middle">intent</text>
+
+        <circle class="node mid" cx="160" cy="110" r="30"/>
+        <text class="node-label" x="160" y="107" text-anchor="middle">LangGraph</text>
+        <text class="node-label" x="160" y="120" text-anchor="middle">agent</text>
+
+        <circle class="node" cx="70" cy="210" r="24"/>
+        <text class="node-label" x="70" y="214" text-anchor="middle">FastMCP</text>
+
+        <circle class="node" cx="250" cy="215" r="24"/>
+        <text class="node-label" x="250" y="214" text-anchor="middle">UPI API</text>
+
+        <circle class="node hot" cx="160" cy="270" r="26"/>
+        <text class="node-label active" x="160" y="274" text-anchor="middle">response</text>
+      </svg>
+    </div>
+  </div>
+</header>
+
+<section id="experience">
+  <div class="wrap">
+    <div class="sec-head"><span class="idx">01</span><h2>Experience</h2></div>
+    <div class="pipeline">
+      <div class="role">
+        <p class="role-title">Junior Software Engineer — NPCI (via Mistvyl Pvt. Ltd.)</p>
+        <p class="role-meta">Aug 2025 – Present · Hyderabad, India</p>
+        <ul>
+          <li>Built and deployed an AI-powered conversational UPI support agent, cutting manual workload by 40% and improving customer response times.</li>
+          <li>Designed LangGraph-based agent workflows enabling multi-step reasoning and automated decision-making for transaction support.</li>
+          <li>Built secure FastMCP backend integrations connecting the agent to real-time UPI transaction APIs.</li>
+          <li>Integrated LLM pipelines with production systems to handle high-volume financial queries at optimized latency and scale.</li>
+          <li>Automated repetitive support workflows, improving system response time and reducing manual intervention.</li>
+          <li>Maintained data security and compliance through secure API communication and validation layers.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="projects">
+  <div class="wrap">
+    <div class="sec-head"><span class="idx">02</span><h2>Projects</h2></div>
+    <div class="projects">
+
+      <div class="project">
+        <div>
+          <h3>UPI AI Payment Agent</h3>
+          <div class="stack">Python · LangGraph · FastMCP</div>
+          <a class="repo" href="https://github.com/Sholja08" target="_blank">github.com/Sholja08 →</a>
+        </div>
+        <ul>
+          <li>Built an AI-driven payment assistant handling UPI queries, transaction assistance, and mandate lifecycle operations.</li>
+          <li>Designed multi-step agent workflows with LangGraph for automated task execution and orchestration.</li>
+          <li>Integrated secure APIs and backend services for reliable communication with financial systems and payment platforms.</li>
+          <li>Implemented real-time query resolution, improving support efficiency and user experience.</li>
+          <li>Applied AI/ML techniques to improve query understanding and response accuracy.</li>
+        </ul>
+      </div>
+
+      <div class="project">
+        <div>
+          <h3>Portfolio Website</h3>
+          <div class="stack">HTML · CSS</div>
+          <a class="repo" href="https://github.com/Sholja08" target="_blank">github.com/Sholja08 →</a>
+        </div>
+        <ul>
+          <li>Built a fully responsive portfolio showcasing technical projects, achievements, and development skills.</li>
+          <li>Optimized layout and front-end performance across multiple devices and screen sizes.</li>
+          <li>Improved UI structure and accessibility for better navigation and user experience.</li>
+        </ul>
+      </div>
+
+      <div class="project">
+        <div>
+          <h3>Amazon Clone</h3>
+          <div class="stack">HTML · CSS</div>
+          <a class="repo" href="https://github.com/Sholja08" target="_blank">github.com/Sholja08 →</a>
+        </div>
+        <ul>
+          <li>Built a responsive UI clone using Flexbox and CSS Grid following modern layout practices.</li>
+          <li>Applied responsive design principles to strengthen front-end development fundamentals.</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section id="skills">
+  <div class="wrap">
+    <div class="sec-head"><span class="idx">03</span><h2>Technical skills</h2></div>
+    <div class="skill-grid">
+      <div class="skill-group">
+        <h4>Programming languages</h4>
+        <div class="chip-row">
+          <span class="chip">Python</span><span class="chip">SQL</span><span class="chip">HTML</span><span class="chip">CSS</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <h4>AI / Machine learning</h4>
+        <div class="chip-row">
+          <span class="chip">Machine Learning</span><span class="chip">Deep Learning</span><span class="chip">Generative AI</span><span class="chip">LLMs</span><span class="chip">NLP</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <h4>AI frameworks & tools</h4>
+        <div class="chip-row">
+          <span class="chip">LangChain</span><span class="chip">LangGraph</span><span class="chip">FastMCP</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <h4>Developer tools</h4>
+        <div class="chip-row">
+          <span class="chip">Git</span><span class="chip">GitHub</span><span class="chip">VS Code</span><span class="chip">Jupyter Notebook</span>
+        </div>
+      </div>
+      <div class="skill-group" style="grid-column: 1 / -1;">
+        <h4>Core concepts</h4>
+        <div class="chip-row">
+          <span class="chip">OOP</span><span class="chip">Data Structures & Algorithms</span><span class="chip">DBMS</span><span class="chip">Problem Solving</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="education">
+  <div class="wrap">
+    <div class="sec-head"><span class="idx">04</span><h2>Education</h2></div>
+
+    <div class="edu-item">
+      <div>
+        <div class="school">Institute of Technology and Management, Gorakhpur</div>
+        <div class="degree">B.Tech in Computer Science · 2021 – 2025</div>
+      </div>
+      <div class="score">CGPA 7.6</div>
+    </div>
+
+    <div class="edu-item">
+      <div>
+        <div class="school">Jawahar Navodaya Vidyalaya, Kushinagar</div>
+        <div class="degree">12th & 10th Standard</div>
+      </div>
+      <div class="score">90% · 89%</div>
+    </div>
+  </div>
+</section>
+
+<footer id="contact">
+  <div class="wrap">
+    <h2>Let's build something.</h2>
+    <p>Open to Data Science, ML, and backend engineering roles.</p>
+    <div class="hero-links">
+      <a href="mailto:sholjachauhan@gmail.com" class="primary">sholjachauhan@gmail.com</a>
+      <a href="tel:+916386943668">+91 63869 43668</a>
+      <a href="https://linkedin.com/in/sholja-chauhan" target="_blank">LinkedIn</a>
+      <a href="https://github.com/Sholja08" target="_blank">GitHub</a>
+    </div>
+    <div class="fine">Gorakhpur, Uttar Pradesh, India</div>
+  </div>
+</footer>
+
+</body>
+</html>
